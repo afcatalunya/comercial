@@ -81,7 +81,7 @@
       background: rgba(76,175,95,.12);
       box-shadow: 0 0 0 3px rgba(76,175,95,.2);
     }
-    .pin-digit.filled { border-color: var(--green-mid); }
+    .pin-digit.filled { border-color: var(--green-mid); color: transparent; text-shadow: 0 0 0 rgba(255,255,255,.8); }
 
     .pin-btn {
       width: 100%; padding: 14px;
@@ -430,10 +430,10 @@
     <div class="pin-title">Zona Comercial</div>
     <p class="pin-sub">Introduce el PIN de acceso</p>
     <div class="pin-inputs" id="pin-inputs">
-      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
-      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
-      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
-      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
     </div>
     <button class="pin-btn" id="pin-btn" onclick="checkPin()">Acceder</button>
     <div class="pin-error" id="pin-error"></div>
@@ -1066,27 +1066,55 @@
   }
   checkSession();
 
-  // Navegación entre campos
+  // Navegación entre campos PIN
   document.querySelectorAll('.pin-digit').forEach((input, idx, all) => {
+
+    input.addEventListener('keydown', function(e) {
+      // Solo permitir números, teclas de control y backspace
+      if (!/^[0-9]$/.test(e.key) && !['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        return;
+      }
+      if (e.key === 'Backspace') {
+        if (this.value) {
+          this.value = '';
+          this.classList.remove('filled');
+        } else {
+          const prev = all[idx - 1];
+          if (prev) { prev.value = ''; prev.classList.remove('filled'); prev.focus(); }
+        }
+        e.preventDefault();
+        return;
+      }
+      if (e.key === 'Enter') { checkPin(); return; }
+      // Si ya tiene valor y se pulsa número, sobreescribir y avanzar
+      if (/^[0-9]$/.test(e.key) && this.value) {
+        this.value = e.key;
+        this.classList.add('filled');
+        const next = all[idx + 1];
+        if (next) next.focus();
+        else checkPin();
+        e.preventDefault();
+      }
+    });
+
     input.addEventListener('input', function() {
-      const val = this.value.replace(/[^0-9]/g, '');
+      const val = this.value.replace(/[^0-9]/g, '').slice(-1);
       this.value = val;
       if (val) {
         this.classList.add('filled');
         const next = all[idx + 1];
-        if (next) next.focus();
-        if ([...all].every(i => i.value.length === 1)) checkPin();
+        if (next) {
+          next.focus();
+        } else {
+          // último dígito — verificar
+          if ([...all].every(i => i.value.length === 1)) checkPin();
+        }
       } else {
         this.classList.remove('filled');
       }
     });
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Backspace' && !this.value) {
-        const prev = all[idx - 1];
-        if (prev) { prev.value = ''; prev.classList.remove('filled'); prev.focus(); }
-      }
-      if (e.key === 'Enter') checkPin();
-    });
+
     input.addEventListener('paste', function(e) {
       e.preventDefault();
       const paste = (e.clipboardData || window.clipboardData)
@@ -1097,6 +1125,11 @@
       const next = all[Math.min(paste.length, 3)];
       if (next) next.focus();
       if ([...all].every(i => i.value.length === 1)) checkPin();
+    });
+
+    // Seleccionar contenido al hacer foco para facilitar sobreescritura
+    input.addEventListener('focus', function() {
+      setTimeout(() => this.select(), 10);
     });
   });
 
