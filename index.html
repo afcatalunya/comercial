@@ -64,24 +64,36 @@
     .pin-title { font-family: var(--font-head); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
     .pin-sub   { font-size: .8125rem; color: rgba(255,255,255,.45); margin-bottom: 32px; }
 
-    .pin-inputs { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+    .pin-inputs { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; position: relative; }
+    /* Input invisible que captura el foco y los caracteres */
+    .pin-hidden-input {
+      position: absolute; opacity: 0; width: 100%; height: 100%;
+      top: 0; left: 0;
+      font-size: 16px; border: none; outline: none;
+      background: transparent; color: transparent; caret-color: transparent;
+    }
+    /* Casillas visuales */
     .pin-digit {
       width: 56px; height: 64px;
       background: rgba(255,255,255,.07);
       border: 1.5px solid rgba(255,255,255,.15);
       border-radius: var(--radius);
-      font-family: var(--font-head); font-size: 1.75rem; font-weight: 800;
-      color: var(--white); text-align: center;
-      caret-color: var(--green-accent); outline: none;
-      transition: all var(--trans);
-      -webkit-appearance: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--trans);
     }
-    .pin-digit:focus {
+    .pin-digit.active {
       border-color: var(--green-accent);
       background: rgba(76,175,95,.12);
       box-shadow: 0 0 0 3px rgba(76,175,95,.2);
     }
-    .pin-digit.filled { border-color: var(--green-mid); color: transparent; text-shadow: 0 0 0 rgba(255,255,255,.8); }
+    .pin-digit.filled { border-color: var(--green-mid); }
+    /* Punto dentro de la casilla */
+    .pin-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: transparent; transition: all var(--trans);
+    }
+    .pin-digit.filled .pin-dot { background: var(--white); }
+    .pin-digit.active .pin-dot { background: rgba(255,255,255,.3); }
 
     .pin-btn {
       width: 100%; padding: 14px;
@@ -429,11 +441,13 @@
          alt="Aluminios Franco" class="pin-logo">
     <div class="pin-title">Zona Comercial</div>
     <p class="pin-sub">Introduce el PIN de acceso</p>
-    <div class="pin-inputs" id="pin-inputs">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
+    <div class="pin-inputs" id="pin-inputs" onclick="document.getElementById('pin-real').focus()">
+      <input id="pin-real" class="pin-hidden-input" type="tel" inputmode="numeric"
+             maxlength="4" pattern="[0-9]*" autocomplete="one-time-code" autocorrect="off">
+      <div class="pin-digit active" id="pd0"><div class="pin-dot"></div></div>
+      <div class="pin-digit" id="pd1"><div class="pin-dot"></div></div>
+      <div class="pin-digit" id="pd2"><div class="pin-dot"></div></div>
+      <div class="pin-digit" id="pd3"><div class="pin-dot"></div></div>
     </div>
     <button class="pin-btn" id="pin-btn" onclick="checkPin()">Acceder</button>
     <div class="pin-error" id="pin-error"></div>
@@ -1052,90 +1066,45 @@
       d.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' });
   })();
 
-  // Comprobar sesión activa
   function checkSession() {
     if (sessionStorage.getItem('af_comercial') === '1') {
       document.getElementById('pin-screen').classList.add('hidden');
       document.getElementById('app').classList.add('visible');
     } else {
-      setTimeout(() => {
-        const first = document.querySelector('.pin-digit[data-index="0"]');
-        if (first) first.focus();
-      }, 200);
+      focusPin();
     }
   }
   checkSession();
 
-  // Navegación entre campos PIN
-  document.querySelectorAll('.pin-digit').forEach((input, idx, all) => {
+  // ── PIN: input único oculto ──
+  const pinReal = document.getElementById('pin-real');
 
-    input.addEventListener('keydown', function(e) {
-      // Solo permitir números, teclas de control y backspace
-      if (!/^[0-9]$/.test(e.key) && !['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-        return;
-      }
-      if (e.key === 'Backspace') {
-        if (this.value) {
-          this.value = '';
-          this.classList.remove('filled');
-        } else {
-          const prev = all[idx - 1];
-          if (prev) { prev.value = ''; prev.classList.remove('filled'); prev.focus(); }
-        }
-        e.preventDefault();
-        return;
-      }
-      if (e.key === 'Enter') { checkPin(); return; }
-      // Si ya tiene valor y se pulsa número, sobreescribir y avanzar
-      if (/^[0-9]$/.test(e.key) && this.value) {
-        this.value = e.key;
-        this.classList.add('filled');
-        const next = all[idx + 1];
-        if (next) next.focus();
-        else checkPin();
-        e.preventDefault();
-      }
-    });
+  function updatePinDisplay(val) {
+    for (let i = 0; i < 4; i++) {
+      const box = document.getElementById('pd' + i);
+      box.classList.toggle('filled', i < val.length);
+      box.classList.toggle('active', i === val.length);
+    }
+  }
 
-    input.addEventListener('input', function() {
-      const val = this.value.replace(/[^0-9]/g, '').slice(-1);
-      this.value = val;
-      if (val) {
-        this.classList.add('filled');
-        const next = all[idx + 1];
-        if (next) {
-          next.focus();
-        } else {
-          // último dígito — verificar
-          if ([...all].every(i => i.value.length === 1)) checkPin();
-        }
-      } else {
-        this.classList.remove('filled');
-      }
-    });
-
-    input.addEventListener('paste', function(e) {
-      e.preventDefault();
-      const paste = (e.clipboardData || window.clipboardData)
-        .getData('text').replace(/[^0-9]/g, '').slice(0, 4);
-      paste.split('').forEach((ch, i) => {
-        if (all[i]) { all[i].value = ch; all[i].classList.add('filled'); }
-      });
-      const next = all[Math.min(paste.length, 3)];
-      if (next) next.focus();
-      if ([...all].every(i => i.value.length === 1)) checkPin();
-    });
-
-    // Seleccionar contenido al hacer foco para facilitar sobreescritura
-    input.addEventListener('focus', function() {
-      setTimeout(() => this.select(), 10);
-    });
+  pinReal.addEventListener('input', function() {
+    const val = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+    this.value = val;
+    updatePinDisplay(val);
+    if (val.length === 4) checkPin();
   });
 
+  pinReal.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPin();
+  });
+
+  // Foco automático al cargar (si no hay sesión)
+  function focusPin() {
+    setTimeout(() => { if (pinReal) pinReal.focus(); }, 200);
+  }
+
   function checkPin() {
-    const digits = [...document.querySelectorAll('.pin-digit')];
-    const entered = digits.map(d => d.value).join('');
+    const entered = (pinReal.value || '').replace(/[^0-9]/g, '');
     const errEl = document.getElementById('pin-error');
     if (entered.length < 4) { errEl.textContent = 'Introduce los 4 dígitos'; return; }
     if (entered === PIN) {
@@ -1148,8 +1117,9 @@
       document.getElementById('pin-inputs').classList.add('pin-shake');
       setTimeout(() => {
         document.getElementById('pin-inputs').classList.remove('pin-shake');
-        digits.forEach(d => { d.value = ''; d.classList.remove('filled'); });
-        digits[0].focus();
+        pinReal.value = '';
+        updatePinDisplay('');
+        pinReal.focus();
       }, 420);
     }
   }
@@ -1158,8 +1128,9 @@
     sessionStorage.removeItem('af_comercial');
     document.getElementById('app').classList.remove('visible');
     document.getElementById('pin-screen').classList.remove('hidden');
-    document.querySelectorAll('.pin-digit').forEach(d => { d.value = ''; d.classList.remove('filled'); });
-    setTimeout(() => document.querySelector('.pin-digit').focus(), 150);
+    pinReal.value = '';
+    updatePinDisplay('');
+    focusPin();
   }
 
   // ── CALCULADORA DE PESO ──
