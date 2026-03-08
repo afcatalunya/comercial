@@ -1083,28 +1083,25 @@
         return;
       }
       if (e.key === 'Enter') { checkPin(); return; }
-      if (!/^[0-9]$/.test(e.key)) { e.preventDefault(); return; }
-      e.preventDefault();
-      this.value = e.key;
-      this.classList.add('filled');
-      if (idx < 3) {
-        pinDigits[idx + 1].focus();
-      } else {
-        this.blur();
-        checkPin();
+      // Bloquear no-numéricos pero NO preventDefault en dígitos — dejar que lleguen a input
+      if (!/^[0-9]$/.test(e.key) && !['Tab','ArrowLeft','ArrowRight'].includes(e.key)) {
+        e.preventDefault();
       }
     });
 
     input.addEventListener('input', function() {
+      // Limpiar y quedarse solo con el último dígito numérico
       const val = this.value.replace(/[^0-9]/g, '').slice(-1);
-      if (!val) { this.value = ''; this.classList.remove('filled'); return; }
       this.value = val;
-      this.classList.add('filled');
-      if (idx < 3) {
-        pinDigits[idx + 1].focus();
+      if (val) {
+        this.classList.add('filled');
+        if (idx < 3) {
+          pinDigits[idx + 1].focus();
+        } else {
+          checkPin();
+        }
       } else {
-        this.blur();
-        checkPin();
+        this.classList.remove('filled');
       }
     });
 
@@ -1119,9 +1116,6 @@
       else if (pinDigits[paste.length]) pinDigits[paste.length].focus();
     });
 
-    input.addEventListener('focus', function() {
-      setTimeout(() => this.select(), 10);
-    });
   });
 
   function checkPin() {
@@ -1215,8 +1209,8 @@
     }
 
     const peso_metro = (seccion / 1000) * density / 1000 * 1000; // kg/m
-    const longitud   = parseFloat(document.getElementById('c-longitud').value) || 0;
-    const peso_ud    = (seccion * longitud / 1000) * density / 1000;
+    const longitud2  = parseFloat(document.getElementById('c-longitud').value) || 0;
+    const peso_ud    = (seccion * longitud2 / 1000) * density / 1000;
     const peso_tot   = peso_ud * uds;
 
     const fmt = v => {
