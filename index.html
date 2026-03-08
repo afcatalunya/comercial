@@ -835,9 +835,13 @@
     // Ocultar todos los campos opcionales
     ['d-longitud','d-ancho','d-espesor','d-alto','d-anchoe','d-pared','d-diam','d-ala1','d-ala2','d-espang'].forEach(id => vis(id, false));
 
+    const esChapa = (tipo === 'chapa');
+
     // Mostrar solo los que corresponden
-    if (tipo === 'chapa' || tipo === 'pletina') {
+    if (tipo === 'chapa') {
       vis('d-longitud', true); vis('d-ancho', true); vis('d-espesor', true);
+    } else if (tipo === 'pletina') {
+      vis('d-ancho', true); vis('d-espesor', true);
     } else if (tipo === 'tubo-rect') {
       vis('d-alto', true); vis('d-anchoe', true); vis('d-pared', true);
     } else if (tipo === 'tubo-red') {
@@ -878,13 +882,10 @@
       seccion = a * e + (b - e) * e;
     }
 
-    const peso_ud  = (seccion * longitud / 1000) * density / 1000;
-    const peso_tot = peso_ud * uds;
-
-    // kg por metro lineal (solo para perfiles, independiente de longitud introducida)
     const peso_metro = (seccion / 1000) * density / 1000 * 1000; // kg/m
-
-    const esChapa = (tipo === 'chapa' || tipo === 'pletina');
+    const longitud   = parseFloat(document.getElementById('c-longitud').value) || 0;
+    const peso_ud    = (seccion * longitud / 1000) * density / 1000;
+    const peso_tot   = peso_ud * uds;
 
     const fmt = v => {
       if (!v || isNaN(v) || v <= 0) return '—';
@@ -894,17 +895,15 @@
     };
 
     if (esChapa) {
-      // Chapa: resultado principal = peso de la pieza, secundario = kg/ud
       document.getElementById('lbl-total').textContent = 'Peso de la pieza';
       document.getElementById('lbl-unit').textContent  = 'Peso por unidad';
       document.getElementById('calc-output').textContent = fmt(peso_ud);
       document.getElementById('calc-unit').textContent   = fmt(peso_ud) + '/ud × ' + uds + ' = ' + fmt(peso_tot);
     } else {
-      // Perfiles: resultado principal = kg/m, secundario = peso total barras
-      document.getElementById('lbl-total').textContent = 'Peso por metro (kg/m)';
-      document.getElementById('lbl-unit').textContent  = 'Peso total ' + uds + (uds === 1 ? ' barra' : ' barras');
+      document.getElementById('lbl-total').textContent = 'Peso por metro';
+      document.getElementById('lbl-unit').textContent  = 'kg/m';
       document.getElementById('calc-output').textContent = fmt(peso_metro) + '/m';
-      document.getElementById('calc-unit').textContent   = fmt(peso_tot);
+      document.getElementById('calc-unit').textContent   = fmt(peso_metro);
     }
   }
 
