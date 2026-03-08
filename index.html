@@ -874,8 +874,8 @@
 
       <div class="comp-filter">
         <button class="comp-chip active" onclick="filtrarSistemas('all', this)">Todos</button>
-        <button class="comp-chip" onclick="filtrarSistemas('ventana', this)">Ventana</button>
-        <button class="comp-chip" onclick="filtrarSistemas('puerta', this)">Puerta</button>
+        <button class="comp-chip" onclick="filtrarSistemas('ventana', this)">Abatible / Plegable</button>
+        <button class="comp-chip" onclick="filtrarSistemas('corredera', this)">Corredera</button>
         <button class="comp-chip" onclick="filtrarSistemas('fachada', this)">Fachada / Muro cortina</button>
         <button class="comp-chip" onclick="filtrarSistemas('proteccion', this)">Protección solar</button>
         <button class="comp-chip" onclick="filtrarSistemas('barandilla', this)">Barandilla</button>
@@ -883,146 +883,289 @@
 
       <div class="comp-grid">
 
-        <div class="comp-card" data-cat="ventana puerta">
+        <!-- ABATIBLES -->
+        <div class="comp-card" data-cat="ventana">
           <div class="comp-card__sistema">Abatible</div>
-          <div class="comp-card__nombre">Serie Residencial 45–60 mm</div>
+          <div class="comp-card__nombre">Abatible 40 / 40-47</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Opcional (RPT)</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 36 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Permeabilidad aire</span><span class="comp-row__val">Clase 4</span></div>
-            <div class="comp-row"><span class="comp-row__key">Estanqueidad agua</span><span class="comp-row__val">Clase E900</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial, reforma</span></div>
-          </div>
-          <div style="margin-top:10px;">
-            <span class="comp-tag comp-tag--yes">Ventana</span>
-            <span class="comp-tag comp-tag--yes">Puerta balconera</span>
-            <span class="comp-tag comp-tag--no">No fachada</span>
-          </div>
-        </div>
-
-        <div class="comp-card" data-cat="ventana puerta">
-          <div class="comp-card__sistema">Abatible RPT</div>
-          <div class="comp-card__nombre">Serie Premium 60–70 mm</div>
-          <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — Poliamida 24–34 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 48 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uw mín. orientativo</span><span class="comp-row__val">≤ 1,4 W/m²K</span></div>
-            <div class="comp-row"><span class="comp-row__key">Permeabilidad aire</span><span class="comp-row__val">Clase 4</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Obra nueva, passivhaus</span></div>
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">No</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">40 / 40-47 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Reforma, vivienda económica</span></div>
           </div>
           <div style="margin-top:10px;">
             <span class="comp-tag comp-tag--yes">Ventana</span>
             <span class="comp-tag comp-tag--yes">Puerta</span>
+            <span class="comp-tag comp-tag--no">Sin RPT</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Abatible</div>
+          <div class="comp-card__nombre">Abatible 45-52</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">No</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">45-52 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial estándar</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Ventana</span>
+            <span class="comp-tag comp-tag--yes">Puerta balconera</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Abatible RPT</div>
+          <div class="comp-card__nombre">Abatible 45-52 RPT</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — Poliamida</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">45-52 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Obra nueva, CTE HE</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">RPT</span>
+            <span class="comp-tag comp-tag--yes">CTE HE</span>
+            <span class="comp-tag comp-tag--yes">Oscilobatiente</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Abatible RPT</div>
+          <div class="comp-card__nombre">Abatible 54-61 RPT</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — Poliamida reforzada</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">54-61 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Alta eficiencia, passivhaus</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">RPT</span>
+            <span class="comp-tag comp-tag--yes">Passivhaus</span>
+            <span class="comp-tag comp-tag--yes">Gran acristalamiento</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Abatible RPT Premium</div>
+          <div class="comp-card__nombre">EXA 80-87 RPT</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — Poliamida 24 mm Technoform</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">80-87 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Máx. prestaciones, lujo</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">RPT</span>
+            <span class="comp-tag comp-tag--yes">Gama alta</span>
             <span class="comp-tag comp-tag--yes">CTE HE</span>
           </div>
         </div>
 
-        <div class="comp-card" data-cat="ventana puerta">
-          <div class="comp-card__sistema">Corredera</div>
-          <div class="comp-card__nombre">Serie Corredera 2 / 3 hojas</div>
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Abatible Hoja Oculta</div>
+          <div class="comp-card__nombre">EXHO 75 — Hoja Oculta</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Con / sin RPT</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 28 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Anchura max. hoja</span><span class="comp-row__val">~1.200 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Terraza, salón, baño</span></div>
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil marco/hoja</span><span class="comp-row__val">75 mm — hoja invisible</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Diseño minimalista, arquitectura</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Hoja oculta</span>
+            <span class="comp-tag comp-tag--yes">Minimalista</span>
+            <span class="comp-tag comp-tag--yes">RPT</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana">
+          <div class="comp-card__sistema">Plegable</div>
+          <div class="comp-card__nombre">Plegable Basic</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">No</span></div>
+            <div class="comp-row"><span class="comp-row__key">Apertura</span><span class="comp-row__val">Plegado total del hueco</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Grandes huecos, terrazas</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Plegable</span>
+            <span class="comp-tag comp-tag--yes">Apertura total</span>
+          </div>
+        </div>
+
+        <!-- CORREDERAS -->
+        <div class="comp-card" data-cat="corredera">
+          <div class="comp-card__sistema">Corredera</div>
+          <div class="comp-card__nombre">Corredera 75 / Junior 21</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">No</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">75 mm / económica</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Terraza, salón, reforma</span></div>
           </div>
           <div style="margin-top:10px;">
             <span class="comp-tag comp-tag--yes">Corredera</span>
             <span class="comp-tag comp-tag--yes">2/3 hojas</span>
-            <span class="comp-tag comp-tag--no">No apto passivhaus</span>
+            <span class="comp-tag comp-tag--no">Sin RPT</span>
           </div>
         </div>
 
-        <div class="comp-card" data-cat="ventana puerta">
-          <div class="comp-card__sistema">Corredera elevadora</div>
-          <div class="comp-card__nombre">HST / Lift & Slide</div>
+        <div class="comp-card" data-cat="corredera">
+          <div class="comp-card__sistema">Corredera</div>
+          <div class="comp-card__nombre">Euronova 60</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">No</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">60 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial, balconeras</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Corredera</span>
+            <span class="comp-tag comp-tag--yes">Balconera</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="corredera">
+          <div class="comp-card__sistema">Corredera Perimetral</div>
+          <div class="comp-card__nombre">Perimetral 70 / 70 RPT</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Opcional (RPT)</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">70 mm perimetral</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Obra nueva, prestaciones medias</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Perimetral</span>
+            <span class="comp-tag comp-tag--yes">Con/sin RPT</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="corredera">
+          <div class="comp-card__sistema">Corredera Perimetral RPT</div>
+          <div class="comp-card__nombre">Perimetral 100 / 90 RPT</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — RPT</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">100 / 90 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Alta eficiencia, gran formato</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">RPT</span>
+            <span class="comp-tag comp-tag--yes">CTE HE</span>
+            <span class="comp-tag comp-tag--yes">Gran formato</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="corredera">
+          <div class="comp-card__sistema">Elevable RPT</div>
+          <div class="comp-card__nombre">Elevable 100 / 120 RPT</div>
           <div class="comp-rows">
             <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — RPT integrado</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 52 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Peso max. hoja</span><span class="comp-row__val">Hasta 400 kg</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">100 / 120 mm elevable</span></div>
             <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Grandes aperturas, lujo</span></div>
           </div>
           <div style="margin-top:10px;">
-            <span class="comp-tag comp-tag--yes">Gran formato</span>
+            <span class="comp-tag comp-tag--yes">Elevable</span>
             <span class="comp-tag comp-tag--yes">RPT</span>
-            <span class="comp-tag comp-tag--yes">CTE HE</span>
+            <span class="comp-tag comp-tag--yes">Gran formato</span>
           </div>
         </div>
 
+        <!-- FACHADA -->
         <div class="comp-card" data-cat="fachada">
-          <div class="comp-card__sistema">Muro cortina</div>
-          <div class="comp-card__nombre">Stick / Unitizado 50–65 mm</div>
+          <div class="comp-card__sistema">Muro Cortina</div>
+          <div class="comp-card__nombre">EMC-60 (TT / VE / ED / EB / MN / SE)</div>
           <div class="comp-rows">
             <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — obligatorio</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 52 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Módulo montante</span><span class="comp-row__val">600–1.500 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Edificio oficinas, hotel</span></div>
+            <div class="comp-row"><span class="comp-row__key">Módulo montante</span><span class="comp-row__val">60 mm — 6 variantes</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Edificios oficinas, hoteles</span></div>
           </div>
           <div style="margin-top:10px;">
-            <span class="comp-tag comp-tag--yes">Fachada</span>
+            <span class="comp-tag comp-tag--yes">Muro cortina</span>
             <span class="comp-tag comp-tag--yes">Stick</span>
-            <span class="comp-tag comp-tag--yes">Unitizado</span>
+            <span class="comp-tag comp-tag--yes">6 tipologías</span>
           </div>
         </div>
 
         <div class="comp-card" data-cat="fachada">
-          <div class="comp-card__sistema">Fachada ventilada</div>
-          <div class="comp-card__nombre">Subest. + Panel / Chapa</div>
+          <div class="comp-card__sistema">Fachada / Chapa</div>
+          <div class="comp-card__nombre">Panel Composite / Chapa Deployé / Minionda</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Material aplacado</span><span class="comp-row__val">Composite, chapa, HPL</span></div>
-            <div class="comp-row"><span class="comp-row__key">Cámara ventilada</span><span class="comp-row__val">≥ 20 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Fijación</span><span class="comp-row__val">Oculta / vista</span></div>
-            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Rehabilitación, obra nueva</span></div>
+            <div class="comp-row"><span class="comp-row__key">Material</span><span class="comp-row__val">Composite, deployé, minionda</span></div>
+            <div class="comp-row"><span class="comp-row__key">Espesores</span><span class="comp-row__val">0,5 a 40 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Fachadas, rótulos, decoración</span></div>
           </div>
           <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Fachada ventilada</span>
             <span class="comp-tag comp-tag--yes">Rehabilitación</span>
-            <span class="comp-tag comp-tag--yes">Eficiencia energética</span>
           </div>
         </div>
 
+        <!-- PROTECCIÓN SOLAR -->
         <div class="comp-card" data-cat="proteccion">
           <div class="comp-card__sistema">Protección solar</div>
-          <div class="comp-card__nombre">Lama horizontal / vertical</div>
+          <div class="comp-card__nombre">Celosías y Lamas</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Orientación</span><span class="comp-row__val">H / V / mixta</span></div>
-            <div class="comp-row"><span class="comp-row__key">Ancho lama</span><span class="comp-row__val">100–400 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Orientación</span><span class="comp-row__val">Horizontal / vertical</span></div>
             <div class="comp-row"><span class="comp-row__key">Motorización</span><span class="comp-row__val">Opcional</span></div>
-            <div class="comp-row"><span class="comp-row__key">Acabado</span><span class="comp-row__val">Lacado / anodizado</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Fachada, control solar</span></div>
           </div>
           <div style="margin-top:10px;">
-            <span class="comp-tag comp-tag--yes">Fachada</span>
-            <span class="comp-tag comp-tag--yes">LEED</span>
+            <span class="comp-tag comp-tag--yes">Celosía</span>
+            <span class="comp-tag comp-tag--yes">Lama</span>
             <span class="comp-tag comp-tag--yes">Motorizable</span>
           </div>
         </div>
 
         <div class="comp-card" data-cat="proteccion">
-          <div class="comp-card__sistema">Persiana / Mallorquina</div>
-          <div class="comp-card__nombre">Lama enrollable / batiente</div>
+          <div class="comp-card__sistema">Persiana</div>
+          <div class="comp-card__nombre">Mallorquina Corredera / Abisagrada</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Lama</span><span class="comp-row__val">37–55 mm maciza/microperforada</span></div>
+            <div class="comp-row"><span class="comp-row__key">Tipo apertura</span><span class="comp-row__val">Corredera / abisagrada</span></div>
             <div class="comp-row"><span class="comp-row__key">Accionamiento</span><span class="comp-row__val">Manual / motor</span></div>
             <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial, hotel</span></div>
           </div>
           <div style="margin-top:10px;">
-            <span class="comp-tag comp-tag--yes">Enrollable</span>
-            <span class="comp-tag comp-tag--yes">Batiente</span>
+            <span class="comp-tag comp-tag--yes">Mallorquina</span>
+            <span class="comp-tag comp-tag--yes">Corredera</span>
+            <span class="comp-tag comp-tag--yes">Abisagrada</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="proteccion">
+          <div class="comp-card__sistema">Pérgola</div>
+          <div class="comp-card__nombre">Pérgola Bioclimática Continental</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Lamas orientables</span><span class="comp-row__val">Sí — motorizadas</span></div>
+            <div class="comp-row"><span class="comp-row__key">Protección lluvia</span><span class="comp-row__val">Sí</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Terrazas, hostelería, jardines</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Bioclimática</span>
+            <span class="comp-tag comp-tag--yes">Motorizada</span>
+            <span class="comp-tag comp-tag--yes">Exterior</span>
+          </div>
+        </div>
+
+        <!-- BARANDILLAS -->
+        <div class="comp-card" data-cat="barandilla">
+          <div class="comp-card__sistema">Barandilla</div>
+          <div class="comp-card__nombre">Railing Glass</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Relleno</span><span class="comp-row__val">Vidrio laminar</span></div>
+            <div class="comp-row"><span class="comp-row__key">Perfil</span><span class="comp-row__val">Aluminio en "U"</span></div>
+            <div class="comp-row"><span class="comp-row__key">Carga lateral</span><span class="comp-row__val">Hasta 1,6 kN/m</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Terrazas, escaleras, minimalista</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Vidrio</span>
+            <span class="comp-tag comp-tag--yes">Minimalista</span>
+            <span class="comp-tag comp-tag--yes">CTE DB-SU</span>
           </div>
         </div>
 
         <div class="comp-card" data-cat="barandilla">
           <div class="comp-card__sistema">Barandilla</div>
-          <div class="comp-card__nombre">Sistema post + vidrio / barra</div>
+          <div class="comp-card__nombre">Barandillas Tradicionales</div>
           <div class="comp-rows">
-            <div class="comp-row"><span class="comp-row__key">Altura reglamentaria</span><span class="comp-row__val">≥ 900 / 1.100 mm</span></div>
-            <div class="comp-row"><span class="comp-row__key">Relleno</span><span class="comp-row__val">Vidrio laminar / cable / barra</span></div>
-            <div class="comp-row"><span class="comp-row__key">Fijación post</span><span class="comp-row__val">Lateral / embutido / pavimento</span></div>
-            <div class="comp-row"><span class="comp-row__key">Normativa</span><span class="comp-row__val">CTE DB-SU / EN 1090</span></div>
+            <div class="comp-row"><span class="comp-row__key">Relleno</span><span class="comp-row__val">Barra / cable / panel</span></div>
+            <div class="comp-row"><span class="comp-row__key">Fijación</span><span class="comp-row__val">Lateral / pavimento / embutido</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Interior, exterior, escaleras</span></div>
           </div>
           <div style="margin-top:10px;">
             <span class="comp-tag comp-tag--yes">Interior</span>
             <span class="comp-tag comp-tag--yes">Exterior</span>
-            <span class="comp-tag comp-tag--yes">Terraza</span>
+            <span class="comp-tag comp-tag--yes">CTE DB-SU</span>
           </div>
         </div>
 
