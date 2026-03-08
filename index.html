@@ -70,17 +70,17 @@
       background: rgba(255,255,255,.07);
       border: 1.5px solid rgba(255,255,255,.15);
       border-radius: var(--radius);
-      text-align: center; font-size: 24px; font-weight: 700;
-      color: transparent; caret-color: transparent;
+      text-align: center; font-size: 28px; font-weight: 700;
+      color: white; caret-color: transparent;
       outline: none; transition: all var(--trans);
-      -webkit-text-security: disc;
+      letter-spacing: 0;
     }
     .pin-digit:focus {
       border-color: var(--green-accent);
       background: rgba(76,175,95,.12);
       box-shadow: 0 0 0 3px rgba(76,175,95,.2);
     }
-    .pin-digit.filled { border-color: var(--green-mid); color: white; }
+    .pin-digit.filled { border-color: var(--green-mid); }
 
     .pin-btn {
       width: 100%; padding: 14px;
@@ -429,10 +429,10 @@
     <div class="pin-title">Zona Comercial</div>
     <p class="pin-sub">Introduce el PIN de acceso</p>
     <div class="pin-inputs" id="pin-inputs">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
-      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
+      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
+      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
+      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
+      <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
     </div>
     <button class="pin-btn" id="pin-btn" onclick="checkPin()">Acceder</button>
     <div class="pin-error" id="pin-error"></div>
