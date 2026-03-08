@@ -152,7 +152,7 @@
       padding: 0 24px 80px;
       display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     }
-    @media (max-width: 700px) { .main-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 960px) { .main-grid { grid-template-columns: 1fr; } }
 
     .card {
       background: rgba(255,255,255,.04);
@@ -257,8 +257,8 @@
     .download-item:hover .download-item__arrow svg { color: var(--white); }
 
     /* ── DELEGACIONES ── */
-    .deleg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    @media (max-width: 860px) { .deleg-grid { grid-template-columns: 1fr; } }
+    .deleg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    @media (max-width: 960px) { .deleg-grid { grid-template-columns: 1fr; } }
     .deleg-card {
       padding: 18px;
       background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
@@ -272,7 +272,7 @@
     }
     .deleg-card__row { display: flex; align-items: center; gap: 8px; font-size: .8125rem; color: rgba(255,255,255,.55); margin-bottom: 6px; }
     .deleg-card__row svg { width: 13px; height: 13px; color: var(--green-accent); flex-shrink: 0; }
-    .deleg-card__row a { color: rgba(255,255,255,.75); text-decoration: none; transition: color var(--trans); }
+    .deleg-card__row a { color: rgba(255,255,255,.75); text-decoration: none; transition: color var(--trans); font-size: .75rem; word-break: break-all; overflow-wrap: anywhere; }
     .deleg-card__row a:hover { color: var(--white); }
 
     /* ── FOOTER ── */
@@ -287,7 +287,7 @@
     .footer__links a:hover { color: rgba(255,255,255,.6); }
 
     /* Tablet */
-    @media (max-width: 860px) {
+    @media (max-width: 960px) {
       .main-grid { grid-template-columns: 1fr; }
       .card--full { grid-column: 1; }
     }
@@ -425,18 +425,7 @@
           </div>
         </a>
 
-        <a href="https://aluminiosfranco.es/descargas/" target="_blank" rel="noopener" class="download-item">
-          <div class="download-item__icon download-item__icon--web">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-          </div>
-          <div class="download-item__info">
-            <div class="download-item__name">Área de descargas — aluminiosfranco.es</div>
-            <div class="download-item__meta">Web · Todos los documentos, DXF y fichas técnicas</div>
-          </div>
-          <div class="download-item__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </div>
-        </a>
+
 
       </div>
     </div>
@@ -453,18 +442,6 @@
         <a href="https://teams.microsoft.com/l/team/19%3A1anVYGOO9fjVdEF17Tz1HkgBD2yiZzwnuRhpnCZ-ITs1%40thread.tacv2/conversations?groupId=4b9c61a1-3c6e-48c7-901a-4d7c08077093&tenantId=2867a8c6-10e6-4fbe-af07-0defa46862cf" target="_blank" rel="noopener" class="btn-link">
           <div class="btn-link__left">
             <span class="btn-link__dot" style="background:#6264a7;"></span>Teams — Comercial AF
-          </div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-        <a href="https://afcatalunya.github.io/intranet/" target="_blank" rel="noopener" class="btn-link">
-          <div class="btn-link__left">
-            <span class="btn-link__dot"></span>Intranet AF
-          </div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-        <a href="https://afcatalunya.github.io/afweb/" target="_blank" rel="noopener" class="btn-link">
-          <div class="btn-link__left">
-            <span class="btn-link__dot btn-link__dot--blue"></span>Web corporativa AF
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
