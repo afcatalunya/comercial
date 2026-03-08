@@ -595,9 +595,9 @@
 
         <!-- CAMPOS DINÁMICOS — se muestran/ocultan según tipo -->
 
-        <!-- Longitud — siempre visible -->
-        <div class="calc-field" id="d-longitud">
-          <label class="calc-label" for="c-longitud" id="lbl-longitud">Longitud / Largo (mm)</label>
+        <!-- Longitud — solo para chapa/pletina -->
+        <div class="calc-field" id="d-longitud" style="display:none;">
+          <label class="calc-label" for="c-longitud">Longitud / Largo (mm)</label>
           <input class="calc-input" type="number" id="c-longitud" value="6000" min="1" oninput="calcUpdate()">
         </div>
 
@@ -833,11 +833,11 @@
     };
 
     // Ocultar todos los campos opcionales
-    ['d-ancho','d-espesor','d-alto','d-anchoe','d-pared','d-diam','d-ala1','d-ala2','d-espang'].forEach(id => vis(id, false));
+    ['d-longitud','d-ancho','d-espesor','d-alto','d-anchoe','d-pared','d-diam','d-ala1','d-ala2','d-espang'].forEach(id => vis(id, false));
 
     // Mostrar solo los que corresponden
     if (tipo === 'chapa' || tipo === 'pletina') {
-      vis('d-ancho', true); vis('d-espesor', true);
+      vis('d-longitud', true); vis('d-ancho', true); vis('d-espesor', true);
     } else if (tipo === 'tubo-rect') {
       vis('d-alto', true); vis('d-anchoe', true); vis('d-pared', true);
     } else if (tipo === 'tubo-red') {
