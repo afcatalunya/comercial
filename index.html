@@ -64,36 +64,23 @@
     .pin-title { font-family: var(--font-head); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
     .pin-sub   { font-size: .8125rem; color: rgba(255,255,255,.45); margin-bottom: 32px; }
 
-    .pin-inputs { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; position: relative; }
-    /* Input invisible que captura el foco y los caracteres */
-    .pin-hidden-input {
-      position: absolute; opacity: 0; width: 100%; height: 100%;
-      top: 0; left: 0;
-      font-size: 16px; border: none; outline: none;
-      background: transparent; color: transparent; caret-color: transparent;
-    }
-    /* Casillas visuales */
+    .pin-inputs { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
     .pin-digit {
       width: 56px; height: 64px;
       background: rgba(255,255,255,.07);
       border: 1.5px solid rgba(255,255,255,.15);
       border-radius: var(--radius);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all var(--trans);
+      text-align: center; font-size: 24px; font-weight: 700;
+      color: transparent; caret-color: transparent;
+      outline: none; transition: all var(--trans);
+      -webkit-text-security: disc;
     }
-    .pin-digit.active {
+    .pin-digit:focus {
       border-color: var(--green-accent);
       background: rgba(76,175,95,.12);
       box-shadow: 0 0 0 3px rgba(76,175,95,.2);
     }
-    .pin-digit.filled { border-color: var(--green-mid); }
-    /* Punto dentro de la casilla */
-    .pin-dot {
-      width: 14px; height: 14px; border-radius: 50%;
-      background: transparent; transition: all var(--trans);
-    }
-    .pin-digit.filled .pin-dot { background: var(--white); }
-    .pin-digit.active .pin-dot { background: rgba(255,255,255,.3); }
+    .pin-digit.filled { border-color: var(--green-mid); color: white; }
 
     .pin-btn {
       width: 100%; padding: 14px;
@@ -441,13 +428,11 @@
          alt="Aluminios Franco" class="pin-logo">
     <div class="pin-title">Zona Comercial</div>
     <p class="pin-sub">Introduce el PIN de acceso</p>
-    <div class="pin-inputs" id="pin-inputs" onclick="document.getElementById('pin-real').focus()">
-      <input id="pin-real" class="pin-hidden-input" type="tel" inputmode="numeric"
-             maxlength="4" pattern="[0-9]*" autocomplete="one-time-code" autocorrect="off">
-      <div class="pin-digit active" id="pd0"><div class="pin-dot"></div></div>
-      <div class="pin-digit" id="pd1"><div class="pin-dot"></div></div>
-      <div class="pin-digit" id="pd2"><div class="pin-dot"></div></div>
-      <div class="pin-digit" id="pd3"><div class="pin-dot"></div></div>
+    <div class="pin-inputs" id="pin-inputs">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0" aria-label="Dígito 1">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1" aria-label="Dígito 2">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2" aria-label="Dígito 3">
+      <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3" aria-label="Dígito 4">
     </div>
     <button class="pin-btn" id="pin-btn" onclick="checkPin()">Acceder</button>
     <div class="pin-error" id="pin-error"></div>
@@ -1071,40 +1056,76 @@
       document.getElementById('pin-screen').classList.add('hidden');
       document.getElementById('app').classList.add('visible');
     } else {
-      focusPin();
+      setTimeout(() => {
+        const first = document.querySelector('.pin-digit[data-index="0"]');
+        if (first) first.focus();
+      }, 200);
     }
   }
   checkSession();
 
-  // ── PIN: input único oculto ──
-  const pinReal = document.getElementById('pin-real');
+  // ── PIN: 4 inputs reales ──
+  const pinDigits = [...document.querySelectorAll('.pin-digit')];
 
-  function updatePinDisplay(val) {
-    for (let i = 0; i < 4; i++) {
-      const box = document.getElementById('pd' + i);
-      box.classList.toggle('filled', i < val.length);
-      box.classList.toggle('active', i === val.length);
-    }
-  }
+  pinDigits.forEach((input, idx) => {
 
-  pinReal.addEventListener('input', function() {
-    const val = this.value.replace(/[^0-9]/g, '').slice(0, 4);
-    this.value = val;
-    updatePinDisplay(val);
-    if (val.length === 4) checkPin();
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        if (this.value) {
+          this.value = '';
+          this.classList.remove('filled');
+        } else if (idx > 0) {
+          pinDigits[idx - 1].value = '';
+          pinDigits[idx - 1].classList.remove('filled');
+          pinDigits[idx - 1].focus();
+        }
+        return;
+      }
+      if (e.key === 'Enter') { checkPin(); return; }
+      if (!/^[0-9]$/.test(e.key)) { e.preventDefault(); return; }
+      e.preventDefault();
+      this.value = e.key;
+      this.classList.add('filled');
+      if (idx < 3) {
+        pinDigits[idx + 1].focus();
+      } else {
+        this.blur();
+        checkPin();
+      }
+    });
+
+    input.addEventListener('input', function() {
+      const val = this.value.replace(/[^0-9]/g, '').slice(-1);
+      if (!val) { this.value = ''; this.classList.remove('filled'); return; }
+      this.value = val;
+      this.classList.add('filled');
+      if (idx < 3) {
+        pinDigits[idx + 1].focus();
+      } else {
+        this.blur();
+        checkPin();
+      }
+    });
+
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData)
+        .getData('text').replace(/[^0-9]/g, '').slice(0, 4);
+      paste.split('').forEach((ch, i) => {
+        if (pinDigits[i]) { pinDigits[i].value = ch; pinDigits[i].classList.add('filled'); }
+      });
+      if (paste.length === 4) checkPin();
+      else if (pinDigits[paste.length]) pinDigits[paste.length].focus();
+    });
+
+    input.addEventListener('focus', function() {
+      setTimeout(() => this.select(), 10);
+    });
   });
-
-  pinReal.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPin();
-  });
-
-  // Foco automático al cargar (si no hay sesión)
-  function focusPin() {
-    setTimeout(() => { if (pinReal) pinReal.focus(); }, 200);
-  }
 
   function checkPin() {
-    const entered = (pinReal.value || '').replace(/[^0-9]/g, '');
+    const entered = pinDigits.map(d => d.value).join('');
     const errEl = document.getElementById('pin-error');
     if (entered.length < 4) { errEl.textContent = 'Introduce los 4 dígitos'; return; }
     if (entered === PIN) {
@@ -1117,9 +1138,8 @@
       document.getElementById('pin-inputs').classList.add('pin-shake');
       setTimeout(() => {
         document.getElementById('pin-inputs').classList.remove('pin-shake');
-        pinReal.value = '';
-        updatePinDisplay('');
-        pinReal.focus();
+        pinDigits.forEach(d => { d.value = ''; d.classList.remove('filled'); });
+        pinDigits[0].focus();
       }, 420);
     }
   }
@@ -1128,9 +1148,8 @@
     sessionStorage.removeItem('af_comercial');
     document.getElementById('app').classList.remove('visible');
     document.getElementById('pin-screen').classList.remove('hidden');
-    pinReal.value = '';
-    updatePinDisplay('');
-    focusPin();
+    pinDigits.forEach(d => { d.value = ''; d.classList.remove('filled'); });
+    setTimeout(() => pinDigits[0].focus(), 150);
   }
 
   // ── CALCULADORA DE PESO ──
