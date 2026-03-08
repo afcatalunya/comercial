@@ -275,6 +275,63 @@
     .deleg-card__row a { color: rgba(255,255,255,.75); text-decoration: none; transition: color var(--trans); font-size: .75rem; word-break: break-all; overflow-wrap: anywhere; }
     .deleg-card__row a:hover { color: var(--white); }
 
+    /* ── CALCULADORA ── */
+    .calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 480px) { .calc-form { grid-template-columns: 1fr; } }
+    .calc-field { display: flex; flex-direction: column; gap: 6px; }
+    .calc-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.4); }
+    .calc-input, .calc-select {
+      padding: 10px 14px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius); color: var(--white);
+      font-family: var(--font-body); font-size: .9rem;
+      outline: none; transition: all var(--trans);
+    }
+    .calc-input:focus, .calc-select:focus { border-color: var(--green-accent); background: rgba(76,175,95,.1); }
+    .calc-select option { background: #1C5527; color: var(--white); }
+    .calc-result {
+      grid-column: 1 / -1; margin-top: 4px;
+      padding: 16px 20px;
+      background: rgba(76,175,95,.12); border: 1px solid rgba(76,175,95,.3);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .calc-result__label { font-size: .8rem; color: rgba(255,255,255,.5); }
+    .calc-result__value { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--green-accent); }
+    .calc-btn {
+      grid-column: 1 / -1; padding: 12px;
+      background: var(--green); color: var(--white); border: none;
+      border-radius: var(--radius); font-family: var(--font-body);
+      font-size: .9rem; font-weight: 600; cursor: pointer; transition: all var(--trans);
+    }
+    .calc-btn:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+    /* ── DIRECTORIO ── */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .team-card {
+      padding: 16px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius); transition: all var(--trans);
+    }
+    .team-card:hover { border-color: rgba(76,175,95,.3); background: rgba(76,175,95,.06); }
+    .team-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-size: .9rem; font-weight: 800;
+      color: var(--white); margin-bottom: 12px; flex-shrink: 0;
+    }
+    .team-name { font-size: .9rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .team-role { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--green-accent); margin-bottom: 10px; }
+    .team-contact { display: flex; flex-direction: column; gap: 5px; }
+    .team-contact a {
+      display: flex; align-items: center; gap: 7px;
+      font-size: .78rem; color: rgba(255,255,255,.55);
+      text-decoration: none; transition: color var(--trans);
+    }
+    .team-contact a:hover { color: var(--white); }
+    .team-contact svg { width: 12px; height: 12px; color: var(--green-accent); flex-shrink: 0; }
+
     /* ── FOOTER ── */
     .footer {
       max-width: 1100px; margin: 0 auto; padding: 24px;
@@ -502,6 +559,133 @@
       </div>
     </div>
 
+
+    <!-- CALCULADORA PESO -->
+    <div class="card card--full">
+      <div class="card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+      </div>
+      <div class="card__label">Herramienta interna</div>
+      <div class="card__title">Calculadora de Peso</div>
+      <p class="card__desc">Calcula el peso de chapas y perfiles normalizados de aluminio según dimensiones y aleación.</p>
+      <div class="calc-form">
+
+        <div class="calc-field">
+          <label class="calc-label" for="calc-tipo">Tipo de producto</label>
+          <select class="calc-select" id="calc-tipo" onchange="calcUpdate()">
+            <option value="chapa">Chapa / Lámina</option>
+            <option value="tubo-rect">Tubo rectangular / cuadrado</option>
+            <option value="tubo-red">Tubo redondo</option>
+            <option value="angulo">Ángulo</option>
+            <option value="pletina">Pletina / Plano</option>
+            <option value="barra-red">Barra redonda maciza</option>
+          </select>
+        </div>
+
+        <div class="calc-field">
+          <label class="calc-label" for="calc-density">Aleación</label>
+          <select class="calc-select" id="calc-density" onchange="calcUpdate()">
+            <option value="2.70">Serie 1xxx — 1050A, 1100 (2.70 g/cm³)</option>
+            <option value="2.73">Serie 3xxx — 3003, 3004 (2.73 g/cm³)</option>
+            <option value="2.68" selected>Serie 5xxx — 5052, 5083 (2.68 g/cm³)</option>
+            <option value="2.70">Serie 6xxx — 6060, 6061, 6082 (2.70 g/cm³)</option>
+            <option value="2.81">Serie 7xxx — 7075 (2.81 g/cm³)</option>
+          </select>
+        </div>
+
+        <!-- Dimensiones dinámicas -->
+        <div class="calc-field" id="dim-largo">
+          <label class="calc-label" for="calc-largo">Largo (mm)</label>
+          <input class="calc-input" type="number" id="calc-largo" value="6000" min="1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-ancho">
+          <label class="calc-label" for="calc-ancho">Ancho (mm)</label>
+          <input class="calc-input" type="number" id="calc-ancho" value="1000" min="1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-espesor">
+          <label class="calc-label" for="calc-espesor" id="label-espesor">Espesor (mm)</label>
+          <input class="calc-input" type="number" id="calc-espesor" value="3" min="0.1" step="0.1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-diametro" style="display:none;">
+          <label class="calc-label" for="calc-diam">Diámetro exterior (mm)</label>
+          <input class="calc-input" type="number" id="calc-diam" value="50" min="1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-pared" style="display:none;">
+          <label class="calc-label" for="calc-pared">Espesor pared (mm)</label>
+          <input class="calc-input" type="number" id="calc-pared" value="3" min="0.5" step="0.5" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-ala" style="display:none;">
+          <label class="calc-label" for="calc-ala">Ancho ala (mm)</label>
+          <input class="calc-input" type="number" id="calc-ala" value="40" min="1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field" id="dim-ala2" style="display:none;">
+          <label class="calc-label" for="calc-ala2">Ancho ala 2 (mm)</label>
+          <input class="calc-input" type="number" id="calc-ala2" value="40" min="1" oninput="calcUpdate()">
+        </div>
+        <div class="calc-field">
+          <label class="calc-label" for="calc-uds">Unidades / barras</label>
+          <input class="calc-input" type="number" id="calc-uds" value="1" min="1" oninput="calcUpdate()">
+        </div>
+
+        <div class="calc-result">
+          <div>
+            <div class="calc-result__label">Peso total estimado</div>
+            <div class="calc-result__value" id="calc-output">— kg</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="calc-result__label">Peso unitario</div>
+            <div style="font-size:1rem; font-weight:700; color:rgba(255,255,255,.6);" id="calc-unit">— kg/ud</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DIRECTORIO EQUIPO -->
+    <div class="card card--full">
+      <div class="card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="card__label">Uso interno</div>
+      <div class="card__title">Equipo Comercial</div>
+      <p class="card__desc">Directorio de contacto del equipo. Llama o escribe directamente desde aquí.</p>
+      <div class="team-grid">
+
+        <div class="team-card">
+          <div class="team-avatar">DF</div>
+          <div class="team-name">Daniel Fernández</div>
+          <div class="team-role">Comercial</div>
+          <div class="team-contact">
+            <a href="tel:+34639792996">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.1 9.82 19.58 19.58 0 011.07 1.2 2 2 0 013.05 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              639 792 996
+            </a>
+            <a href="mailto:danielf@aluminiosfranco.es">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              danielf@aluminiosfranco.es
+            </a>
+          </div>
+        </div>
+
+        <!-- Añade más miembros copiando el bloque team-card -->
+
+      </div>
+    </div>
+
+    <!-- LME ALUMINIO -->
+    <div class="card card--full">
+      <div class="card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </div>
+      <div class="card__label">Mercado de metales</div>
+      <div class="card__title">Precio LME del Aluminio</div>
+      <p class="card__desc">Cotización del aluminio en el London Metal Exchange. Referencia diaria para coste de material.</p>
+      <a href="https://es.investing.com/commodities/aluminum" target="_blank" rel="noopener" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Ver cotización LME en tiempo real
+      </a>
+    </div>
+
   </main>
 
   <footer class="footer">
@@ -600,6 +784,92 @@
     document.querySelectorAll('.pin-digit').forEach(d => { d.value = ''; d.classList.remove('filled'); });
     setTimeout(() => document.querySelector('.pin-digit').focus(), 150);
   }
+
+  // ── CALCULADORA DE PESO ──
+  function calcUpdate() {
+    const tipo    = document.getElementById('calc-tipo').value;
+    const density = parseFloat(document.getElementById('calc-density').value);
+    const largo   = parseFloat(document.getElementById('calc-largo').value) || 0;
+    const uds     = parseInt(document.getElementById('calc-uds').value) || 1;
+
+    // Mostrar/ocultar campos según tipo
+    const show = (id, visible) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = visible ? '' : 'none';
+    };
+    show('dim-ancho',    ['chapa','pletina'].includes(tipo));
+    show('dim-espesor',  ['chapa','pletina','angulo'].includes(tipo));
+    show('dim-diametro', ['tubo-red','barra-red'].includes(tipo));
+    show('dim-pared',    ['tubo-red'].includes(tipo));
+    show('dim-ala',      ['angulo'].includes(tipo));
+    show('dim-ala2',     false);
+
+    let seccion = 0; // mm²
+
+    if (tipo === 'chapa') {
+      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
+      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
+      seccion = ancho * espesor;
+    } else if (tipo === 'pletina') {
+      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
+      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
+      seccion = ancho * espesor;
+    } else if (tipo === 'tubo-rect') {
+      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
+      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
+      // Para tubo rect: sección = (ancho * espesor_externo) - (ancho-2e)*(espesor_largo-2e)
+      // Usamos largo como altura del tubo y ancho como anchura
+      const e = espesor;
+      seccion = (ancho * largo) - ((ancho - 2*e) * (largo - 2*e));
+      // En este caso largo es la 2ª dimensión del tubo, no la longitud de barra
+      // Recalculamos: campo largo = longitud barra, campos ancho/espesor = sección rect
+      const h     = parseFloat(document.getElementById('calc-ancho').value) || 0;
+      const w     = parseFloat(document.getElementById('calc-espesor').value) || 0; // espesor pared
+      const largo2 = parseFloat(document.getElementById('calc-largo').value) || 0;
+      // Para tubo rect necesitamos alto, ancho exterior y espesor pared
+      // Reutilizamos: ancho = altura exterior, espesor = anchura exterior, ala = pared
+      // Simplificación: pedir alto y ancho exterior, espesor pared
+      seccion = 0; // se recalcula abajo
+    } else if (tipo === 'tubo-red') {
+      const diam  = parseFloat(document.getElementById('calc-diam').value) || 0;
+      const pared = parseFloat(document.getElementById('calc-pared').value) || 0;
+      const r_ext = diam / 2;
+      const r_int = r_ext - pared;
+      seccion = Math.PI * (r_ext * r_ext - Math.max(r_int,0) * Math.max(r_int,0));
+    } else if (tipo === 'barra-red') {
+      const diam = parseFloat(document.getElementById('calc-diam').value) || 0;
+      seccion = Math.PI * (diam/2) * (diam/2);
+    } else if (tipo === 'angulo') {
+      const ala     = parseFloat(document.getElementById('calc-ala').value) || 0;
+      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
+      seccion = (2 * ala - espesor) * espesor;
+    }
+
+    // Tubo rect simplificado: ancho=altura, otro campo espesor pared
+    let volumen_mm3 = 0;
+    if (tipo === 'tubo-rect') {
+      const h    = parseFloat(document.getElementById('calc-ancho').value) || 0;
+      const pared= parseFloat(document.getElementById('calc-espesor').value) || 0;
+      seccion = 4 * h * pared - 4 * pared * pared; // perímetro x pared (aprox cuadrado)
+      volumen_mm3 = seccion * largo;
+    } else {
+      volumen_mm3 = seccion * largo;
+    }
+
+    const volumen_cm3 = volumen_mm3 / 1000;
+    const peso_ud     = volumen_cm3 * density / 1000; // kg
+    const peso_total  = peso_ud * uds;
+
+    const fmt = v => v < 0.001 ? '—' : v >= 1000
+      ? (v/1000).toFixed(2) + ' t'
+      : v.toFixed(3) + ' kg';
+
+    document.getElementById('calc-output').textContent = fmt(peso_total);
+    document.getElementById('calc-unit').textContent   = fmt(peso_ud) + '/ud';
+  }
+
+  // Calcular al cargar
+  document.addEventListener('DOMContentLoaded', calcUpdate);
 </script>
 </body>
 </html>
