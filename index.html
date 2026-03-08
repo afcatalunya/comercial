@@ -332,6 +332,66 @@
     .team-contact a:hover { color: var(--white); }
     .team-contact svg { width: 12px; height: 12px; color: var(--green-accent); flex-shrink: 0; }
 
+    /* ── TABLA ALEACIONES ── */
+    .alloy-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .alloy-tab {
+      padding: 6px 16px; border-radius: 20px; font-size: .78rem; font-weight: 600;
+      cursor: pointer; border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.05); color: rgba(255,255,255,.5);
+      transition: all var(--trans);
+    }
+    .alloy-tab.active { background: var(--green); border-color: var(--green); color: var(--white); }
+    .alloy-tab:hover:not(.active) { border-color: rgba(76,175,95,.4); color: rgba(255,255,255,.8); }
+    .alloy-panel { display: none; }
+    .alloy-panel.active { display: block; }
+    .alloy-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .alloy-table thead tr { border-bottom: 1px solid rgba(76,175,95,.3); }
+    .alloy-table th { padding: 8px 12px; text-align: left; font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--green-accent); }
+    .alloy-table td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,.05);
+      color: rgba(255,255,255,.75); vertical-align: top; }
+    .alloy-table tr:hover td { background: rgba(76,175,95,.06); color: var(--white); }
+    .alloy-table td:first-child { font-weight: 700; color: var(--white); font-family: var(--font-head); }
+    .badge-uso {
+      display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .68rem;
+      font-weight: 600; background: rgba(76,175,95,.15); color: var(--green-accent);
+      border: 1px solid rgba(76,175,95,.25); white-space: nowrap;
+    }
+
+    /* ── COMPARADOR SISTEMAS ── */
+    .comp-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .comp-chip {
+      padding: 5px 14px; border-radius: 20px; font-size: .75rem; font-weight: 600;
+      cursor: pointer; border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.05); color: rgba(255,255,255,.5);
+      transition: all var(--trans);
+    }
+    .comp-chip.active { background: var(--green-dark); border-color: var(--green-accent); color: var(--white); }
+    .comp-chip:hover:not(.active) { border-color: rgba(76,175,95,.4); color: rgba(255,255,255,.8); }
+    .comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .comp-card {
+      padding: 18px; border-radius: var(--radius);
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      transition: all var(--trans);
+    }
+    .comp-card:hover { border-color: rgba(76,175,95,.3); background: rgba(76,175,95,.06); }
+    .comp-card__sistema { font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--green-accent); margin-bottom: 4px; }
+    .comp-card__nombre { font-family: var(--font-head); font-size: 1rem; font-weight: 800;
+      color: var(--white); margin-bottom: 10px; }
+    .comp-rows { display: flex; flex-direction: column; gap: 5px; }
+    .comp-row { display: flex; justify-content: space-between; align-items: baseline;
+      font-size: .78rem; gap: 8px; }
+    .comp-row__key { color: rgba(255,255,255,.4); flex-shrink: 0; }
+    .comp-row__val { color: rgba(255,255,255,.85); text-align: right; font-weight: 500; }
+    .comp-tag {
+      display: inline-block; padding: 2px 7px; border-radius: 8px; font-size: .65rem;
+      font-weight: 700; margin: 2px 2px 0 0;
+    }
+    .comp-tag--yes { background: rgba(76,175,95,.2); color: var(--green-accent); border: 1px solid rgba(76,175,95,.3); }
+    .comp-tag--no  { background: rgba(255,255,255,.06); color: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.1); }
+    .comp-card[data-cat].hidden { display: none; }
+
     /* ── FOOTER ── */
     .footer {
       max-width: 1100px; margin: 0 auto; padding: 24px;
@@ -721,6 +781,255 @@
       </a>
     </div>
 
+    <!-- TABLA ALEACIONES -->
+    <div class="card card--full">
+      <div class="card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+      </div>
+      <div class="card__label">Referencia técnica</div>
+      <div class="card__title">Aleaciones de Aluminio — Equivalencias EN / ASTM</div>
+      <p class="card__desc">Principales aleaciones por serie, equivalencias internacionales, densidad, aplicaciones típicas y stock habitual en AF.</p>
+
+      <div class="alloy-tabs">
+        <button class="alloy-tab active" onclick="showSerie('s1')">Serie 1xxx</button>
+        <button class="alloy-tab" onclick="showSerie('s3')">Serie 3xxx</button>
+        <button class="alloy-tab" onclick="showSerie('s5')">Serie 5xxx</button>
+        <button class="alloy-tab" onclick="showSerie('s6')">Serie 6xxx</button>
+        <button class="alloy-tab" onclick="showSerie('s7')">Serie 7xxx</button>
+      </div>
+
+      <!-- Serie 1xxx -->
+      <div class="alloy-panel active" id="s1">
+        <table class="alloy-table">
+          <thead><tr><th>EN (EU)</th><th>ASTM (USA)</th><th>DIN</th><th>g/cm³</th><th>Rm (MPa)</th><th>Aplicaciones típicas</th><th>Stock AF</th></tr></thead>
+          <tbody>
+            <tr><td>EN AW-1050A</td><td>1050</td><td>Al 99,5</td><td>2.70</td><td>65–95</td><td>Chapa decorativa, reflectores, condensadores, industria química</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-1060</td><td>1060</td><td>Al 99,6</td><td>2.70</td><td>60–90</td><td>Conductores eléctricos, bobinas, utensilios</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+            <tr><td>EN AW-1100</td><td>1100</td><td>AlCu</td><td>2.71</td><td>75–110</td><td>Chapa general, intercambiadores de calor, packaging</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-1200</td><td>1200</td><td>Al 99</td><td>2.70</td><td>75–105</td><td>Chapa techo, canalones, sellado flexible</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Serie 3xxx -->
+      <div class="alloy-panel" id="s3">
+        <table class="alloy-table">
+          <thead><tr><th>EN (EU)</th><th>ASTM (USA)</th><th>DIN</th><th>g/cm³</th><th>Rm (MPa)</th><th>Aplicaciones típicas</th><th>Stock AF</th></tr></thead>
+          <tbody>
+            <tr><td>EN AW-3003</td><td>3003</td><td>AlMn1Cu</td><td>2.73</td><td>95–145</td><td>Intercambiadores, depósitos, techumbre, utensilios de cocina</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-3004</td><td>3004</td><td>AlMn1Mg1</td><td>2.72</td><td>170–215</td><td>Latas de bebida, techos nervados, recipientes</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+            <tr><td>EN AW-3105</td><td>3105</td><td>AlMn0,5Mg0,5</td><td>2.72</td><td>115–165</td><td>Chapa para persiana, panel composite base, revestimiento</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Serie 5xxx -->
+      <div class="alloy-panel" id="s5">
+        <table class="alloy-table">
+          <thead><tr><th>EN (EU)</th><th>ASTM (USA)</th><th>DIN</th><th>g/cm³</th><th>Rm (MPa)</th><th>Aplicaciones típicas</th><th>Stock AF</th></tr></thead>
+          <tbody>
+            <tr><td>EN AW-5052</td><td>5052</td><td>AlMg2,5</td><td>2.68</td><td>170–245</td><td>Chapa naval, carrocería, depósitos combustible, arquitectura</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-5083</td><td>5083</td><td>AlMg4,5Mn</td><td>2.66</td><td>270–345</td><td>Naval marino, criogénica, estructural pesado, militar</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-5754</td><td>5754</td><td>AlMg3</td><td>2.67</td><td>190–240</td><td>Carrocería vehículo, suelo camión, estructuras soldadas</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-5005</td><td>5005</td><td>AlMg1</td><td>2.70</td><td>120–175</td><td>Chapa anodizable arquitectura, electrodomésticos, decoración</td><td><span class="badge-uso">✓ Chapa</span></td></tr>
+            <tr><td>EN AW-5086</td><td>5086</td><td>AlMg4</td><td>2.66</td><td>240–305</td><td>Naval alta resistencia, GNL, estructural marino</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Serie 6xxx -->
+      <div class="alloy-panel" id="s6">
+        <table class="alloy-table">
+          <thead><tr><th>EN (EU)</th><th>ASTM (USA)</th><th>DIN</th><th>g/cm³</th><th>Rm (MPa)</th><th>Aplicaciones típicas</th><th>Stock AF</th></tr></thead>
+          <tbody>
+            <tr><td>EN AW-6060</td><td>6063</td><td>AlMgSi</td><td>2.69</td><td>140–195</td><td>Perfilería arquitectura, marcos ventana, carpintería aluminio</td><td><span class="badge-uso">✓ Perfiles</span></td></tr>
+            <tr><td>EN AW-6061</td><td>6061</td><td>AlMg1SiCu</td><td>2.70</td><td>260–310</td><td>Estructural aeronáutica, bicicletas, naval, maquinaria</td><td><span class="badge-uso">✓ Chapa / Perfil</span></td></tr>
+            <tr><td>EN AW-6082</td><td>6082</td><td>AlSi1MgMn</td><td>2.71</td><td>290–340</td><td>Vigas, barras estructurales, puentes, transporte</td><td><span class="badge-uso">✓ Normalizados</span></td></tr>
+            <tr><td>EN AW-6005A</td><td>6005A</td><td>AlSiMg(A)</td><td>2.70</td><td>260–300</td><td>Perfiles estructurales, ferroviario, solar</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+            <tr><td>EN AW-6063</td><td>6063</td><td>AlMg0,7Si</td><td>2.69</td><td>130–185</td><td>Extrusión fina arquitectura, perfiles decorativos, mueble</td><td><span class="badge-uso">✓ Perfiles</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Serie 7xxx -->
+      <div class="alloy-panel" id="s7">
+        <table class="alloy-table">
+          <thead><tr><th>EN (EU)</th><th>ASTM (USA)</th><th>DIN</th><th>g/cm³</th><th>Rm (MPa)</th><th>Aplicaciones típicas</th><th>Stock AF</th></tr></thead>
+          <tbody>
+            <tr><td>EN AW-7075</td><td>7075</td><td>AlZnMgCu1,5</td><td>2.81</td><td>500–570</td><td>Aeronáutica, defensa, moldes, deportes alto rendimiento</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+            <tr><td>EN AW-7020</td><td>7020</td><td>AlZn4,5Mg1</td><td>2.78</td><td>350–420</td><td>Estructural soldable, defensa, transporte, naval ligero</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+            <tr><td>EN AW-7022</td><td>7022</td><td>AlZnMgCu0,5</td><td>2.82</td><td>460–510</td><td>Moldes plástico, utillaje, aeroespacial</td><td><span class="badge-uso" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1);">Consultar</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMPARADOR SISTEMAS CARPINTERÍA -->
+    <div class="card card--full">
+      <div class="card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </div>
+      <div class="card__label">Apoyo a la venta</div>
+      <div class="card__title">Comparador de Sistemas de Carpintería</div>
+      <p class="card__desc">Selecciona la aplicación para filtrar los sistemas recomendados. Usa la tabla para orientar al cliente en la elección correcta.</p>
+
+      <div class="comp-filter">
+        <button class="comp-chip active" onclick="filtrarSistemas('all', this)">Todos</button>
+        <button class="comp-chip" onclick="filtrarSistemas('ventana', this)">Ventana</button>
+        <button class="comp-chip" onclick="filtrarSistemas('puerta', this)">Puerta</button>
+        <button class="comp-chip" onclick="filtrarSistemas('fachada', this)">Fachada / Muro cortina</button>
+        <button class="comp-chip" onclick="filtrarSistemas('proteccion', this)">Protección solar</button>
+        <button class="comp-chip" onclick="filtrarSistemas('barandilla', this)">Barandilla</button>
+      </div>
+
+      <div class="comp-grid">
+
+        <div class="comp-card" data-cat="ventana puerta">
+          <div class="comp-card__sistema">Abatible</div>
+          <div class="comp-card__nombre">Serie Residencial 45–60 mm</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Opcional (RPT)</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 36 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Permeabilidad aire</span><span class="comp-row__val">Clase 4</span></div>
+            <div class="comp-row"><span class="comp-row__key">Estanqueidad agua</span><span class="comp-row__val">Clase E900</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial, reforma</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Ventana</span>
+            <span class="comp-tag comp-tag--yes">Puerta balconera</span>
+            <span class="comp-tag comp-tag--no">No fachada</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana puerta">
+          <div class="comp-card__sistema">Abatible RPT</div>
+          <div class="comp-card__nombre">Serie Premium 60–70 mm</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — Poliamida 24–34 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 48 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uw mín. orientativo</span><span class="comp-row__val">≤ 1,4 W/m²K</span></div>
+            <div class="comp-row"><span class="comp-row__key">Permeabilidad aire</span><span class="comp-row__val">Clase 4</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Obra nueva, passivhaus</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Ventana</span>
+            <span class="comp-tag comp-tag--yes">Puerta</span>
+            <span class="comp-tag comp-tag--yes">CTE HE</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana puerta">
+          <div class="comp-card__sistema">Corredera</div>
+          <div class="comp-card__nombre">Serie Corredera 2 / 3 hojas</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Con / sin RPT</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 28 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Anchura max. hoja</span><span class="comp-row__val">~1.200 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Terraza, salón, baño</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Corredera</span>
+            <span class="comp-tag comp-tag--yes">2/3 hojas</span>
+            <span class="comp-tag comp-tag--no">No apto passivhaus</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="ventana puerta">
+          <div class="comp-card__sistema">Corredera elevadora</div>
+          <div class="comp-card__nombre">HST / Lift & Slide</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — RPT integrado</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 52 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Peso max. hoja</span><span class="comp-row__val">Hasta 400 kg</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Grandes aperturas, lujo</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Gran formato</span>
+            <span class="comp-tag comp-tag--yes">RPT</span>
+            <span class="comp-tag comp-tag--yes">CTE HE</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="fachada">
+          <div class="comp-card__sistema">Muro cortina</div>
+          <div class="comp-card__nombre">Stick / Unitizado 50–65 mm</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Rotura puente térmico</span><span class="comp-row__val">Sí — obligatorio</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acristalamiento</span><span class="comp-row__val">Hasta 52 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Módulo montante</span><span class="comp-row__val">600–1.500 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Edificio oficinas, hotel</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Fachada</span>
+            <span class="comp-tag comp-tag--yes">Stick</span>
+            <span class="comp-tag comp-tag--yes">Unitizado</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="fachada">
+          <div class="comp-card__sistema">Fachada ventilada</div>
+          <div class="comp-card__nombre">Subest. + Panel / Chapa</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Material aplacado</span><span class="comp-row__val">Composite, chapa, HPL</span></div>
+            <div class="comp-row"><span class="comp-row__key">Cámara ventilada</span><span class="comp-row__val">≥ 20 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Fijación</span><span class="comp-row__val">Oculta / vista</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Rehabilitación, obra nueva</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Rehabilitación</span>
+            <span class="comp-tag comp-tag--yes">Eficiencia energética</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="proteccion">
+          <div class="comp-card__sistema">Protección solar</div>
+          <div class="comp-card__nombre">Lama horizontal / vertical</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Orientación</span><span class="comp-row__val">H / V / mixta</span></div>
+            <div class="comp-row"><span class="comp-row__key">Ancho lama</span><span class="comp-row__val">100–400 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Motorización</span><span class="comp-row__val">Opcional</span></div>
+            <div class="comp-row"><span class="comp-row__key">Acabado</span><span class="comp-row__val">Lacado / anodizado</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Fachada</span>
+            <span class="comp-tag comp-tag--yes">LEED</span>
+            <span class="comp-tag comp-tag--yes">Motorizable</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="proteccion">
+          <div class="comp-card__sistema">Persiana / Mallorquina</div>
+          <div class="comp-card__nombre">Lama enrollable / batiente</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Lama</span><span class="comp-row__val">37–55 mm maciza/microperforada</span></div>
+            <div class="comp-row"><span class="comp-row__key">Accionamiento</span><span class="comp-row__val">Manual / motor</span></div>
+            <div class="comp-row"><span class="comp-row__key">Uso típico</span><span class="comp-row__val">Residencial, hotel</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Enrollable</span>
+            <span class="comp-tag comp-tag--yes">Batiente</span>
+          </div>
+        </div>
+
+        <div class="comp-card" data-cat="barandilla">
+          <div class="comp-card__sistema">Barandilla</div>
+          <div class="comp-card__nombre">Sistema post + vidrio / barra</div>
+          <div class="comp-rows">
+            <div class="comp-row"><span class="comp-row__key">Altura reglamentaria</span><span class="comp-row__val">≥ 900 / 1.100 mm</span></div>
+            <div class="comp-row"><span class="comp-row__key">Relleno</span><span class="comp-row__val">Vidrio laminar / cable / barra</span></div>
+            <div class="comp-row"><span class="comp-row__key">Fijación post</span><span class="comp-row__val">Lateral / embutido / pavimento</span></div>
+            <div class="comp-row"><span class="comp-row__key">Normativa</span><span class="comp-row__val">CTE DB-SU / EN 1090</span></div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="comp-tag comp-tag--yes">Interior</span>
+            <span class="comp-tag comp-tag--yes">Exterior</span>
+            <span class="comp-tag comp-tag--yes">Terraza</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
 
   <footer class="footer">
@@ -905,6 +1214,28 @@
       document.getElementById('calc-output').textContent = fmt(peso_metro) + '/m';
       document.getElementById('calc-unit').textContent   = fmt(peso_metro);
     }
+  }
+
+  // ── TABLA ALEACIONES: tabs ──
+  function showSerie(id) {
+    document.querySelectorAll('.alloy-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.alloy-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ── COMPARADOR SISTEMAS: filtro ──
+  function filtrarSistemas(cat, btn) {
+    document.querySelectorAll('.comp-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.comp-card').forEach(card => {
+      if (cat === 'all') {
+        card.classList.remove('hidden');
+      } else {
+        const cats = (card.dataset.cat || '').split(' ');
+        card.classList.toggle('hidden', !cats.includes(cat));
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', calcUpdate);
