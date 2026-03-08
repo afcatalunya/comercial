@@ -570,63 +570,98 @@
       <p class="card__desc">Calcula el peso de chapas y perfiles normalizados de aluminio según dimensiones y aleación.</p>
       <div class="calc-form">
 
+        <!-- FILA 1: tipo + aleación -->
         <div class="calc-field">
           <label class="calc-label" for="calc-tipo">Tipo de producto</label>
           <select class="calc-select" id="calc-tipo" onchange="calcUpdate()">
             <option value="chapa">Chapa / Lámina</option>
-            <option value="tubo-rect">Tubo rectangular / cuadrado</option>
-            <option value="tubo-red">Tubo redondo</option>
-            <option value="angulo">Ángulo</option>
             <option value="pletina">Pletina / Plano</option>
+            <option value="tubo-rect">Tubo rectangular / cuadrado</option>
+            <option value="tubo-red">Tubo redondo hueco</option>
             <option value="barra-red">Barra redonda maciza</option>
+            <option value="angulo">Ángulo (L)</option>
           </select>
         </div>
-
         <div class="calc-field">
           <label class="calc-label" for="calc-density">Aleación</label>
           <select class="calc-select" id="calc-density" onchange="calcUpdate()">
-            <option value="2.70">Serie 1xxx — 1050A, 1100 (2.70 g/cm³)</option>
-            <option value="2.73">Serie 3xxx — 3003, 3004 (2.73 g/cm³)</option>
-            <option value="2.68" selected>Serie 5xxx — 5052, 5083 (2.68 g/cm³)</option>
-            <option value="2.70">Serie 6xxx — 6060, 6061, 6082 (2.70 g/cm³)</option>
-            <option value="2.81">Serie 7xxx — 7075 (2.81 g/cm³)</option>
+            <option value="2.70">1xxx — 1050A, 1100 (2.70 g/cm³)</option>
+            <option value="2.73">3xxx — 3003, 3004 (2.73 g/cm³)</option>
+            <option value="2.68">5xxx — 5052, 5083, 5754 (2.68 g/cm³)</option>
+            <option value="2.70" selected>6xxx — 6060, 6061, 6082 (2.70 g/cm³)</option>
+            <option value="2.81">7xxx — 7075 (2.81 g/cm³)</option>
           </select>
         </div>
 
-        <!-- Dimensiones dinámicas -->
-        <div class="calc-field" id="dim-largo">
-          <label class="calc-label" for="calc-largo">Largo (mm)</label>
-          <input class="calc-input" type="number" id="calc-largo" value="6000" min="1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-ancho">
-          <label class="calc-label" for="calc-ancho">Ancho (mm)</label>
-          <input class="calc-input" type="number" id="calc-ancho" value="1000" min="1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-espesor">
-          <label class="calc-label" for="calc-espesor" id="label-espesor">Espesor (mm)</label>
-          <input class="calc-input" type="number" id="calc-espesor" value="3" min="0.1" step="0.1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-diametro" style="display:none;">
-          <label class="calc-label" for="calc-diam">Diámetro exterior (mm)</label>
-          <input class="calc-input" type="number" id="calc-diam" value="50" min="1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-pared" style="display:none;">
-          <label class="calc-label" for="calc-pared">Espesor pared (mm)</label>
-          <input class="calc-input" type="number" id="calc-pared" value="3" min="0.5" step="0.5" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-ala" style="display:none;">
-          <label class="calc-label" for="calc-ala">Ancho ala (mm)</label>
-          <input class="calc-input" type="number" id="calc-ala" value="40" min="1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field" id="dim-ala2" style="display:none;">
-          <label class="calc-label" for="calc-ala2">Ancho ala 2 (mm)</label>
-          <input class="calc-input" type="number" id="calc-ala2" value="40" min="1" oninput="calcUpdate()">
-        </div>
-        <div class="calc-field">
-          <label class="calc-label" for="calc-uds">Unidades / barras</label>
-          <input class="calc-input" type="number" id="calc-uds" value="1" min="1" oninput="calcUpdate()">
+        <!-- CAMPOS DINÁMICOS — se muestran/ocultan según tipo -->
+
+        <!-- Longitud — siempre visible -->
+        <div class="calc-field" id="d-longitud">
+          <label class="calc-label" for="c-longitud" id="lbl-longitud">Longitud / Largo (mm)</label>
+          <input class="calc-input" type="number" id="c-longitud" value="6000" min="1" oninput="calcUpdate()">
         </div>
 
+        <!-- Ancho — chapa, pletina -->
+        <div class="calc-field" id="d-ancho" style="display:none;">
+          <label class="calc-label" for="c-ancho">Ancho (mm)</label>
+          <input class="calc-input" type="number" id="c-ancho" value="1000" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Espesor — chapa, pletina -->
+        <div class="calc-field" id="d-espesor" style="display:none;">
+          <label class="calc-label" for="c-espesor">Espesor (mm)</label>
+          <input class="calc-input" type="number" id="c-espesor" value="3" min="0.1" step="0.1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Alto exterior — tubo rect -->
+        <div class="calc-field" id="d-alto" style="display:none;">
+          <label class="calc-label" for="c-alto">Alto exterior (mm)</label>
+          <input class="calc-input" type="number" id="c-alto" value="60" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Ancho exterior — tubo rect -->
+        <div class="calc-field" id="d-anchoe" style="display:none;">
+          <label class="calc-label" for="c-anchoe">Ancho exterior (mm)</label>
+          <input class="calc-input" type="number" id="c-anchoe" value="40" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Espesor pared — tubo rect y tubo red -->
+        <div class="calc-field" id="d-pared" style="display:none;">
+          <label class="calc-label" for="c-pared">Espesor de pared (mm)</label>
+          <input class="calc-input" type="number" id="c-pared" value="3" min="0.5" step="0.5" oninput="calcUpdate()">
+        </div>
+
+        <!-- Diámetro exterior — tubo red, barra red -->
+        <div class="calc-field" id="d-diam" style="display:none;">
+          <label class="calc-label" for="c-diam">Diámetro exterior (mm)</label>
+          <input class="calc-input" type="number" id="c-diam" value="50" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Ala A — ángulo -->
+        <div class="calc-field" id="d-ala1" style="display:none;">
+          <label class="calc-label" for="c-ala1">Ala A (mm)</label>
+          <input class="calc-input" type="number" id="c-ala1" value="40" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Ala B — ángulo desigual (opcional) -->
+        <div class="calc-field" id="d-ala2" style="display:none;">
+          <label class="calc-label" for="c-ala2">Ala B (mm) — igual a A si ángulo igual</label>
+          <input class="calc-input" type="number" id="c-ala2" value="40" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- Espesor ángulo -->
+        <div class="calc-field" id="d-espang" style="display:none;">
+          <label class="calc-label" for="c-espang">Espesor ángulo (mm)</label>
+          <input class="calc-input" type="number" id="c-espang" value="4" min="1" step="0.5" oninput="calcUpdate()">
+        </div>
+
+        <!-- Unidades — siempre visible -->
+        <div class="calc-field" id="d-uds">
+          <label class="calc-label" for="c-uds">Unidades / barras</label>
+          <input class="calc-input" type="number" id="c-uds" value="1" min="1" oninput="calcUpdate()">
+        </div>
+
+        <!-- RESULTADO -->
         <div class="calc-result">
           <div>
             <div class="calc-result__label">Peso total estimado</div>
@@ -634,7 +669,7 @@
           </div>
           <div style="text-align:right;">
             <div class="calc-result__label">Peso unitario</div>
-            <div style="font-size:1rem; font-weight:700; color:rgba(255,255,255,.6);" id="calc-unit">— kg/ud</div>
+            <div style="font-size:1rem; font-weight:700; color:rgba(255,255,255,.65);" id="calc-unit">— kg/ud</div>
           </div>
         </div>
 
@@ -789,86 +824,74 @@
   function calcUpdate() {
     const tipo    = document.getElementById('calc-tipo').value;
     const density = parseFloat(document.getElementById('calc-density').value);
-    const largo   = parseFloat(document.getElementById('calc-largo').value) || 0;
-    const uds     = parseInt(document.getElementById('calc-uds').value) || 1;
+    const longitud= parseFloat(document.getElementById('c-longitud').value) || 0;
+    const uds     = Math.max(1, parseInt(document.getElementById('c-uds').value) || 1);
 
-    // Mostrar/ocultar campos según tipo
-    const show = (id, visible) => {
+    const vis = (id, show) => {
       const el = document.getElementById(id);
-      if (el) el.style.display = visible ? '' : 'none';
+      if (el) el.style.display = show ? '' : 'none';
     };
-    show('dim-ancho',    ['chapa','pletina'].includes(tipo));
-    show('dim-espesor',  ['chapa','pletina','angulo'].includes(tipo));
-    show('dim-diametro', ['tubo-red','barra-red'].includes(tipo));
-    show('dim-pared',    ['tubo-red'].includes(tipo));
-    show('dim-ala',      ['angulo'].includes(tipo));
-    show('dim-ala2',     false);
 
-    let seccion = 0; // mm²
+    // Ocultar todos los campos opcionales
+    ['d-ancho','d-espesor','d-alto','d-anchoe','d-pared','d-diam','d-ala1','d-ala2','d-espang'].forEach(id => vis(id, false));
 
-    if (tipo === 'chapa') {
-      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
-      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
-      seccion = ancho * espesor;
-    } else if (tipo === 'pletina') {
-      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
-      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
-      seccion = ancho * espesor;
+    // Mostrar solo los que corresponden
+    if (tipo === 'chapa' || tipo === 'pletina') {
+      vis('d-ancho', true); vis('d-espesor', true);
     } else if (tipo === 'tubo-rect') {
-      const ancho   = parseFloat(document.getElementById('calc-ancho').value) || 0;
-      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
-      // Para tubo rect: sección = (ancho * espesor_externo) - (ancho-2e)*(espesor_largo-2e)
-      // Usamos largo como altura del tubo y ancho como anchura
-      const e = espesor;
-      seccion = (ancho * largo) - ((ancho - 2*e) * (largo - 2*e));
-      // En este caso largo es la 2ª dimensión del tubo, no la longitud de barra
-      // Recalculamos: campo largo = longitud barra, campos ancho/espesor = sección rect
-      const h     = parseFloat(document.getElementById('calc-ancho').value) || 0;
-      const w     = parseFloat(document.getElementById('calc-espesor').value) || 0; // espesor pared
-      const largo2 = parseFloat(document.getElementById('calc-largo').value) || 0;
-      // Para tubo rect necesitamos alto, ancho exterior y espesor pared
-      // Reutilizamos: ancho = altura exterior, espesor = anchura exterior, ala = pared
-      // Simplificación: pedir alto y ancho exterior, espesor pared
-      seccion = 0; // se recalcula abajo
+      vis('d-alto', true); vis('d-anchoe', true); vis('d-pared', true);
     } else if (tipo === 'tubo-red') {
-      const diam  = parseFloat(document.getElementById('calc-diam').value) || 0;
-      const pared = parseFloat(document.getElementById('calc-pared').value) || 0;
-      const r_ext = diam / 2;
-      const r_int = r_ext - pared;
-      seccion = Math.PI * (r_ext * r_ext - Math.max(r_int,0) * Math.max(r_int,0));
+      vis('d-diam', true); vis('d-pared', true);
     } else if (tipo === 'barra-red') {
-      const diam = parseFloat(document.getElementById('calc-diam').value) || 0;
-      seccion = Math.PI * (diam/2) * (diam/2);
+      vis('d-diam', true);
     } else if (tipo === 'angulo') {
-      const ala     = parseFloat(document.getElementById('calc-ala').value) || 0;
-      const espesor = parseFloat(document.getElementById('calc-espesor').value) || 0;
-      seccion = (2 * ala - espesor) * espesor;
+      vis('d-ala1', true); vis('d-ala2', true); vis('d-espang', true);
     }
 
-    // Tubo rect simplificado: ancho=altura, otro campo espesor pared
-    let volumen_mm3 = 0;
-    if (tipo === 'tubo-rect') {
-      const h    = parseFloat(document.getElementById('calc-ancho').value) || 0;
-      const pared= parseFloat(document.getElementById('calc-espesor').value) || 0;
-      seccion = 4 * h * pared - 4 * pared * pared; // perímetro x pared (aprox cuadrado)
-      volumen_mm3 = seccion * largo;
-    } else {
-      volumen_mm3 = seccion * largo;
+    let seccion = 0;
+
+    if (tipo === 'chapa' || tipo === 'pletina') {
+      const ancho   = parseFloat(document.getElementById('c-ancho').value)   || 0;
+      const espesor = parseFloat(document.getElementById('c-espesor').value) || 0;
+      seccion = ancho * espesor;
+
+    } else if (tipo === 'tubo-rect') {
+      const H = parseFloat(document.getElementById('c-alto').value)   || 0;
+      const W = parseFloat(document.getElementById('c-anchoe').value) || 0;
+      const e = parseFloat(document.getElementById('c-pared').value)  || 0;
+      seccion = (H * W) - (Math.max(0, H - 2*e) * Math.max(0, W - 2*e));
+
+    } else if (tipo === 'tubo-red') {
+      const De = parseFloat(document.getElementById('c-diam').value)  || 0;
+      const e  = parseFloat(document.getElementById('c-pared').value) || 0;
+      const Re = De / 2, Ri = Math.max(0, De/2 - e);
+      seccion = Math.PI * (Re*Re - Ri*Ri);
+
+    } else if (tipo === 'barra-red') {
+      const D = parseFloat(document.getElementById('c-diam').value) || 0;
+      seccion = Math.PI * (D/2) * (D/2);
+
+    } else if (tipo === 'angulo') {
+      const a = parseFloat(document.getElementById('c-ala1').value)   || 0;
+      const b = parseFloat(document.getElementById('c-ala2').value)   || 0;
+      const e = parseFloat(document.getElementById('c-espang').value) || 0;
+      seccion = a * e + (b - e) * e;
     }
 
-    const volumen_cm3 = volumen_mm3 / 1000;
-    const peso_ud     = volumen_cm3 * density / 1000; // kg
-    const peso_total  = peso_ud * uds;
+    const peso_ud  = (seccion * longitud / 1000) * density / 1000;
+    const peso_tot = peso_ud * uds;
 
-    const fmt = v => v < 0.001 ? '—' : v >= 1000
-      ? (v/1000).toFixed(2) + ' t'
-      : v.toFixed(3) + ' kg';
+    const fmt = v => {
+      if (!v || isNaN(v) || v <= 0) return '—';
+      if (v >= 1000) return (v/1000).toFixed(3) + ' t';
+      if (v >= 1)    return v.toFixed(3) + ' kg';
+      return (v*1000).toFixed(1) + ' g';
+    };
 
-    document.getElementById('calc-output').textContent = fmt(peso_total);
+    document.getElementById('calc-output').textContent = fmt(peso_tot);
     document.getElementById('calc-unit').textContent   = fmt(peso_ud) + '/ud';
   }
 
-  // Calcular al cargar
   document.addEventListener('DOMContentLoaded', calcUpdate);
 </script>
 </body>
